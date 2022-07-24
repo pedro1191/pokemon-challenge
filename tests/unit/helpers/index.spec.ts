@@ -1,5 +1,6 @@
-import { getRandomNumberBetween, getRandomLoser } from "@/helpers";
 import { faker } from "@faker-js/faker";
+import { generateRandomPokemon } from "../helpers";
+import { getRandomNumberBetween, getRandomLoser } from "@/helpers";
 
 describe("helpers.ts", () => {
   it("generates a random number between two numbers", () => {
@@ -17,20 +18,8 @@ describe("helpers.ts", () => {
 
   it("selects a random pokemon as loser", () => {
     // Arrange
-    const firstPokemon = {
-      name: faker.lorem.word(),
-      sprites: {
-        front_default: faker.internet.url(),
-      },
-      is_selected: faker.datatype.boolean(),
-    };
-    const secondPokemon = {
-      name: faker.lorem.word(),
-      sprites: {
-        front_default: faker.internet.url(),
-      },
-      is_selected: faker.datatype.boolean(),
-    };
+    const firstPokemon = generateRandomPokemon();
+    const secondPokemon = generateRandomPokemon();
 
     // Act
     const randomLoser = getRandomLoser(firstPokemon, secondPokemon);
