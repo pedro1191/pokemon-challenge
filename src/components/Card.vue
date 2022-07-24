@@ -22,7 +22,15 @@ export default {
   padding: 1rem 2rem;
   border-radius: 4px;
   background-color: #89ffe88c;
-  box-shadow: 0px 0px 12px 3px #0000004f;
+  box-shadow: 0px 0px 6px 2px #2446374f;
+}
+
+.pokemon-card:hover {
+  -webkit-transform: scale(1.05);
+  transform: scale(1.05);
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+  box-shadow: 0px 0 14px 5px #2446374f;
 }
 
 figcaption {
