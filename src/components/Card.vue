@@ -16,7 +16,7 @@ export default defineComponent({
   <article
     class="pokemon-card"
     :class="{ selected: pokemon.is_selected }"
-    @click="$emit('selected', pokemon)"
+    @click="$emit('onClick', pokemon)"
   >
     <figure>
       <figcaption>{{ pokemon.name }}</figcaption>
@@ -33,14 +33,14 @@ export default defineComponent({
   background-color: rgba(137, 255, 232, 0.549);
   box-shadow: 0px 0px 6px 2px #2446374f;
   cursor: pointer;
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease;
 }
 
 .pokemon-card:hover,
 .pokemon-card.selected {
   -webkit-transform: scale(1.05);
   transform: scale(1.05);
-  -webkit-transition: all 0.5s ease;
-  transition: all 0.5s ease;
   box-shadow: 0px 0 14px 5px #2446374f;
 }
 
