@@ -16,6 +16,7 @@ export const getPokemons = async (): Promise<IPokemon[]> => {
         sprites: {
           front_default: data.sprites.front_default,
         },
+        is_selected: false,
       };
     })
   );
