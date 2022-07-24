@@ -1,6 +1,6 @@
 <template>
   <header>
-    <h1>Pokemon App!</h1>
+    <h1>Pokémon App!</h1>
   </header>
 
   <router-view />
@@ -39,5 +39,20 @@ h1 {
   padding: 2rem 0 1rem 0;
   font-size: 2.5rem;
   color: #1d1e6f;
+}
+
+.slide-up-enter-active {
+  animation: slide-up 0.5s;
+}
+.slide-up-leave-active {
+  animation: slide-up 0.5s reverse;
+}
+@keyframes slide-up {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 </style>
