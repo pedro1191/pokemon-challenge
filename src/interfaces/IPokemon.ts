@@ -3,4 +3,5 @@ export default interface IPokemon {
   sprites: {
     front_default: string;
   };
+  is_selected: boolean;
 }

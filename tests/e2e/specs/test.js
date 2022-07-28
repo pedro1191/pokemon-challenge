@@ -3,6 +3,6 @@
 describe("HomeView.vue", () => {
   it("Visits the app root url", () => {
     cy.visit("/");
-    cy.contains("h1", "Pokemon App!");
+    cy.contains("h1", "Pokémon App!");
   });
 });

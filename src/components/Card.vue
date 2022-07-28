@@ -1,14 +1,23 @@
 <script lang="ts">
-export default {
+import { defineComponent } from "vue";
+
+export default defineComponent({
   name: "CardComponent",
   props: {
-    pokemon: Object,
+    pokemon: {
+      type: Object,
+      required: true,
+    },
   },
-};
+});
 </script>
 
 <template>
-  <article class="pokemon-card">
+  <article
+    class="pokemon-card"
+    :class="{ selected: pokemon.is_selected }"
+    @click="$emit('onClick', pokemon)"
+  >
     <figure>
       <figcaption>{{ pokemon.name }}</figcaption>
       <img :src="pokemon.sprites.front_default" :alt="pokemon.name" />
@@ -21,8 +30,22 @@ export default {
   margin: 1rem;
   padding: 1rem 2rem;
   border-radius: 4px;
-  background-color: #89ffe88c;
-  box-shadow: 0px 0px 12px 3px #0000004f;
+  background-color: rgba(137, 255, 232, 0.549);
+  box-shadow: 0px 0px 6px 2px #2446374f;
+  cursor: pointer;
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+.pokemon-card:hover,
+.pokemon-card.selected {
+  -webkit-transform: scale(1.05);
+  transform: scale(1.05);
+  box-shadow: 0px 0 14px 5px #2446374f;
+}
+
+.pokemon-card.selected {
+  background-color: rgba(255, 222, 134, 0.82);
 }
 
 figcaption {
