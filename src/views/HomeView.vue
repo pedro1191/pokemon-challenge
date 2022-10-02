@@ -1,33 +1,36 @@
 <template>
   <div class="home">
-    <Card
-      v-for="pokemon of pokemons"
-      :key="pokemon.name"
-      :pokemon="pokemon"
-      @onClick="handleOnClickPokemon"
-    />
-    <transition name="slide-up">
-      <Battle
-        class="battle"
-        :firstPokemon="firstSelectedPokemon"
-        :secondPokemon="secondSelectedPokemon"
-        @fightEnd="handleOnFightEnd"
-        v-if="firstSelectedPokemon && secondSelectedPokemon"
+    <template v-if="!loading">
+      <Card
+        v-for="pokemon of pokemons"
+        :key="pokemon.name"
+        :pokemon="pokemon"
+        @onClick="handleOnClickPokemon"
       />
-    </transition>
-    <transition name="slide-up">
-      <EndGame
-        class="end-game"
-        :champion="champion"
-        @playAgain="handleOnPlayAgain"
-        v-if="champion"
-      />
-    </transition>
-    <transition name="slide-up">
-      <Snackbar @onClose="handleOnCloseSnackbar" v-if="winner && !champion">
-        {{ winner.name }} has won the fight!
-      </Snackbar>
-    </transition>
+      <transition name="slide-up">
+        <Battle
+          class="battle"
+          :firstPokemon="firstSelectedPokemon"
+          :secondPokemon="secondSelectedPokemon"
+          @fightEnd="handleOnFightEnd"
+          v-if="firstSelectedPokemon && secondSelectedPokemon"
+        />
+      </transition>
+      <transition name="slide-up">
+        <EndGame
+          class="end-game"
+          :champion="champion"
+          @playAgain="handleOnPlayAgain"
+          v-if="champion"
+        />
+      </transition>
+      <transition name="slide-up">
+        <Snackbar @onClose="handleOnCloseSnackbar" v-if="winner && !champion">
+          {{ winner.name }} has won the fight!
+        </Snackbar>
+      </transition>
+    </template>
+    <template v-else>Loading...</template>
   </div>
 </template>
 
@@ -53,6 +56,7 @@ export default defineComponent({
   },
   data(): IHomeViewData {
     return {
+      loading: false,
       pokemons: [] as IPokemon[],
       firstSelectedPokemon: null,
       secondSelectedPokemon: null,
@@ -71,8 +75,10 @@ export default defineComponent({
   },
   methods: {
     async listPokemons() {
+      this.loading = true;
       const queryData = this.getQueryData();
       this.pokemons = await getPokemons(queryData);
+      this.loading = false;
     },
     getQueryData() {
       return {
