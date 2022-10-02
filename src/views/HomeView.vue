@@ -16,7 +16,15 @@
       />
     </transition>
     <transition name="slide-up">
-      <Snackbar @onClose="handleOnCloseSnackbar" v-if="winner">
+      <EndGame
+        class="end-game"
+        :champion="champion"
+        @playAgain="handleOnPlayAgain"
+        v-if="champion"
+      />
+    </transition>
+    <transition name="slide-up">
+      <Snackbar @onClose="handleOnCloseSnackbar" v-if="winner && !champion">
         {{ winner.name }} has won the fight!
       </Snackbar>
     </transition>
@@ -28,6 +36,7 @@ import { defineComponent } from "vue";
 import { getPokemons } from "@/services/pokemon";
 import Battle from "@/components/Battle.vue";
 import Card from "@/components/Card.vue";
+import EndGame from "@/components/EndGame.vue";
 import IHomeViewData from "@/interfaces/IHomeViewData";
 import IPokemon from "@/interfaces/IPokemon";
 import Snackbar from "@/components/Snackbar.vue";
@@ -37,6 +46,7 @@ export default defineComponent({
   components: {
     Battle,
     Card,
+    EndGame,
     Snackbar,
   },
   data(): IHomeViewData {
@@ -46,6 +56,13 @@ export default defineComponent({
       secondSelectedPokemon: null,
       winner: null,
     };
+  },
+  computed: {
+    champion(): IPokemon | null {
+      if (this.pokemons.length !== 1) return null;
+
+      return this.winner || this.champion;
+    },
   },
   mounted() {
     this.listPokemons();
@@ -77,6 +94,12 @@ export default defineComponent({
         this.updatePokemons(selectedPokemon);
         return;
       }
+    },
+    handleOnPlayAgain() {
+      this.firstSelectedPokemon = null;
+      this.secondSelectedPokemon = null;
+      this.winner = null;
+      this.listPokemons();
     },
     updatePokemons(selectedPokemon: IPokemon) {
       this.pokemons = this.pokemons.map((pokemon) => {
@@ -120,7 +143,8 @@ export default defineComponent({
   align-items: center;
 }
 
-.battle {
+.battle,
+.end-game {
   position: fixed;
   bottom: 0;
   left: 0;
