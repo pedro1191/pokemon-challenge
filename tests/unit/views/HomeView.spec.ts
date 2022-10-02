@@ -25,7 +25,7 @@ describe("HomeView.vue", () => {
     }
     mockPokemonList = { results: pokemons };
     globalThis.fetch = jest.fn((url) => {
-      if (url === "https://pokeapi.co/api/v2/pokemon") {
+      if (url === `${process.env.VUE_APP_POKEMON_API_URL}/pokemon`) {
         return Promise.resolve({
           json: () => Promise.resolve(mockPokemonList),
         });

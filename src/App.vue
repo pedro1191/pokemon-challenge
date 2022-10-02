@@ -1,6 +1,6 @@
 <template>
   <header>
-    <h1>Pokémon App!</h1>
+    <h1>Pokémon Game!</h1>
   </header>
 
   <router-view />
