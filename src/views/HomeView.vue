@@ -1,33 +1,36 @@
 <template>
   <div class="home">
-    <Card
-      v-for="pokemon of pokemons"
-      :key="pokemon.name"
-      :pokemon="pokemon"
-      @onClick="handleOnClickPokemon"
-    />
-    <transition name="slide-up">
-      <Battle
-        class="battle"
-        :firstPokemon="firstSelectedPokemon"
-        :secondPokemon="secondSelectedPokemon"
-        @fightEnd="handleOnFightEnd"
-        v-if="firstSelectedPokemon && secondSelectedPokemon"
+    <template v-if="!loading">
+      <Card
+        v-for="pokemon of pokemons"
+        :key="pokemon.name"
+        :pokemon="pokemon"
+        @onClick="handleOnClickPokemon"
       />
-    </transition>
-    <transition name="slide-up">
-      <EndGame
-        class="end-game"
-        :champion="champion"
-        @playAgain="handleOnPlayAgain"
-        v-if="champion"
-      />
-    </transition>
-    <transition name="slide-up">
-      <Snackbar @onClose="handleOnCloseSnackbar" v-if="winner && !champion">
-        {{ winner.name }} has won the fight!
-      </Snackbar>
-    </transition>
+      <transition name="slide-up">
+        <Battle
+          class="battle"
+          :firstPokemon="firstSelectedPokemon"
+          :secondPokemon="secondSelectedPokemon"
+          @fightEnd="handleOnFightEnd"
+          v-if="firstSelectedPokemon && secondSelectedPokemon"
+        />
+      </transition>
+      <transition name="slide-up">
+        <EndGame
+          class="end-game"
+          :champion="champion"
+          @playAgain="handleOnPlayAgain"
+          v-if="champion"
+        />
+      </transition>
+      <transition name="slide-up">
+        <Snackbar @onClose="handleOnCloseSnackbar" v-if="winner && !champion">
+          {{ winner.name }} has won the fight!
+        </Snackbar>
+      </transition>
+    </template>
+    <template v-else>Loading...</template>
   </div>
 </template>
 
@@ -40,6 +43,8 @@ import EndGame from "@/components/EndGame.vue";
 import IHomeViewData from "@/interfaces/IHomeViewData";
 import IPokemon from "@/interfaces/IPokemon";
 import Snackbar from "@/components/Snackbar.vue";
+import { getRandomNumberBetween } from "@/helpers";
+import { POKEMONS_COUNT, POKEMONS_PER_PAGE } from "@/constants";
 
 export default defineComponent({
   name: "HomeView",
@@ -51,6 +56,7 @@ export default defineComponent({
   },
   data(): IHomeViewData {
     return {
+      loading: false,
       pokemons: [] as IPokemon[],
       firstSelectedPokemon: null,
       secondSelectedPokemon: null,
@@ -69,7 +75,16 @@ export default defineComponent({
   },
   methods: {
     async listPokemons() {
-      this.pokemons = await getPokemons();
+      this.loading = true;
+      const queryData = this.getQueryData();
+      this.pokemons = await getPokemons(queryData);
+      this.loading = false;
+    },
+    getQueryData() {
+      return {
+        limit: POKEMONS_PER_PAGE,
+        offset: getRandomNumberBetween(0, POKEMONS_COUNT - POKEMONS_PER_PAGE),
+      };
     },
     handleOnClickPokemon(selectedPokemon: IPokemon) {
       this.handleOnCloseSnackbar();
