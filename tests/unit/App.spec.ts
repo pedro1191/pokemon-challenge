@@ -14,6 +14,6 @@ describe("App.vue", () => {
     const wrapperText = wrapper.text();
 
     // Assert
-    expect(wrapperText).toBe("Pokémon App!");
+    expect(wrapperText).toBe("Pokémon Game!");
   });
 });
