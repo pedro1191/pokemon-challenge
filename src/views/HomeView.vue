@@ -40,6 +40,8 @@ import EndGame from "@/components/EndGame.vue";
 import IHomeViewData from "@/interfaces/IHomeViewData";
 import IPokemon from "@/interfaces/IPokemon";
 import Snackbar from "@/components/Snackbar.vue";
+import { getRandomNumberBetween } from "@/helpers";
+import { POKEMONS_COUNT, POKEMONS_PER_PAGE } from "@/constants";
 
 export default defineComponent({
   name: "HomeView",
@@ -69,7 +71,14 @@ export default defineComponent({
   },
   methods: {
     async listPokemons() {
-      this.pokemons = await getPokemons();
+      const queryData = this.getQueryData();
+      this.pokemons = await getPokemons(queryData);
+    },
+    getQueryData() {
+      return {
+        limit: POKEMONS_PER_PAGE,
+        offset: getRandomNumberBetween(0, POKEMONS_COUNT - POKEMONS_PER_PAGE),
+      };
     },
     handleOnClickPokemon(selectedPokemon: IPokemon) {
       this.handleOnCloseSnackbar();

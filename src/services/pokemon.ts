@@ -1,8 +1,15 @@
 import IPokemon from "@/interfaces/IPokemon";
+import IPokemonSearch from "@/interfaces/IPokemonSearch";
 
-export const getPokemons = async (): Promise<IPokemon[]> => {
+export const getPokemons = async (
+  props: IPokemonSearch
+): Promise<IPokemon[]> => {
+  const params = new URLSearchParams({
+    limit: `${props.limit}`,
+    offset: `${props.offset}`,
+  });
   const response = await fetch(
-    `${process.env.VUE_APP_POKEMON_API_URL}/pokemon`
+    `${process.env.VUE_APP_POKEMON_API_URL}/pokemon?` + params
   );
   const data = await response.json();
 
